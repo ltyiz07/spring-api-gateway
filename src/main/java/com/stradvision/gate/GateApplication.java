@@ -18,6 +18,14 @@ public class GateApplication {
 
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
+        /**
+         * have to Add custom predicator to route with token
+         * Document about Spring Could Gateway please check :
+         *      https://cloud.spring.io/spring-cloud-gateway/2.1.x/multi/multi_gateway-starter.html
+         *
+         * to implement circuit breaker check reference :
+         *      https://spring.io/guides/gs/gateway/
+         */
         return builder.routes()
                 .route("path_route", r -> r
                         .path("/**")
