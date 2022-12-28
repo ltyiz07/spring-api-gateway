@@ -2,6 +2,7 @@ package com.stradvision.gate.custompredicates.factories;
 
 import org.springframework.cloud.gateway.handler.predicate.AbstractRoutePredicateFactory;
 import org.springframework.http.HttpCookie;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.server.ServerWebExchange;
 
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.function.Predicate;
 
+@Component
 public class TokenRoutePredicateFactory extends AbstractRoutePredicateFactory<TokenRoutePredicateFactory.Config> {
 
     public TokenRoutePredicateFactory() {
@@ -32,11 +34,6 @@ public class TokenRoutePredicateFactory extends AbstractRoutePredicateFactory<To
                 String cookieValue = cookies.get(0).getValue();
                 isAuthorized = cookieValue.equals("this_is_it");
             }
-
-            // TODO: delete print
-            System.out.println(t.getRequest().getPath());
-            System.out.print("isAuthorized: ");
-            System.out.println(isAuthorized);
 
             return isAuthorized == config.isAuthorized;
         };
