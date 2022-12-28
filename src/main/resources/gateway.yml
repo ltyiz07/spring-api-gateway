@@ -1,0 +1,36 @@
+services:
+  uri:
+    test180: http://10.10.10.180:3031
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: test
+          uri: ${services.uri.test180}
+          predicates:
+            - Path=/test/**
+          filters:
+            - RewritePath=/test/?(?<segment>.*), /test/$\{segment}1212
+
+        - id: token_route
+          uri: http://10.10.10.180:3031
+          predicates:
+            - Path=/api/test
+            - Token=null
+
+        - id: unauthorized_token
+          uri: http://10.10.10.180:3031
+          predicates:
+            - Path=/api/test
+            - name: Token
+              args:
+                isAuthorized: false # this value is mapped to config's args[0] and used at TokenPredicates...
+                tokenName: AuthToken
+          filters:
+            - RewritePath=/api/test,/api/test/login
+
+        - id: local-test
+          uri: http://localhost:3032
+          predicates:
+            - Path=/local-test/**
